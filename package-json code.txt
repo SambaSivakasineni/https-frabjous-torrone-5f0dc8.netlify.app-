@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+</head>
+<body>
+    <div class="searchEngine">
+        <h2>Search Engine</h2>
+        <input id="searchInput" type="text" placeholder="Search for an item">
+        <div class="results">
+            <div class="result">
+                <img src="https://picsum.photos/200" alt="">
+                <h4>Product Name</h4>
+                <p>Price : 1879/-</p>
+                <button>Purchase</button>
+            </div>
+            <div class="result">
+                <img src="https://picsum.photos/200" alt="">
+                <h4>Product Name</h4>
+                <p>Price : 1879/-</p>
+                <button>Purchase</button>
+            </div>
+            <div class="result">
+                <img src="https://picsum.photos/200" alt="">
+                <h4>Product Name</h4>
+                <p>Price : 1879/-</p>
+                <button>Purchase</button>
+            </div>
+            <div class="result">
+                <img src="https://picsum.photos/200" alt="">
+                <h4>Product Name</h4>
+                <p>Price : 1879/-</p>
+                <button>Purchase</button>
+            </div>
+            <div class="result">
+                <img src="https://picsum.photos/200" alt="">
+                <h4>Product Name</h4>
+                <p>Price : 1879/-</p>
+                <button>Purchase</button>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="../Java script/code.js"></script>
+    
+</body>
+</html>
+
+
+<style> 
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;600&family=Montserrat:wght@100;400;500;600&family=Open+Sans:wght@400;600&family=Raleway:wght@300;500&family=Ubuntu&family=Unbounded:wght@300&display=swap');
+
+    *{
+        margin: 0;
+        padding: 0;
+        font-family: Manrope;
+    }
+    body{
+        background-color: #E0F2F1;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+    }
+    input{
+        width: 90%;
+        padding: 0.6rem;
+        outline: none;
+        font-size: 1rem;
+        margin-top: 3vh;
+        border: none;
+        border-bottom: 0.8px solid black;
+        color: #1E88E5;
+        border-radius: 10px;
+    }
+    .results{
+        display: grid;
+        grid-template-columns: repeat(5,1fr);
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    .result{
+        border: 1px solid black;
+        padding: 0.8rem;
+        border-radius: 10px;
+        line-height: 5vh;
+    }
+    button{
+        background-color: cyan;
+        color: black;
+        padding: 0.4rem;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        border-radius: 6px;
+    }
+    img{
+        height: 100px;
+    }
+        
+    
+
+</style>
+
+
+
+
+let data = []
+
+let resultRootElement = document.querySelector('.results')
+
+fetch('https://fakestoreapi.com/products')
+            .then(res=>res.json())
+            .then(json=>{data= json ;
+            console.log(data)})
+
+document.querySelector("#searchInput").addEventListener('keyup',()=>{
+    let searchinput = String(document.querySelector('#searchInput').value)
+    let resultArray = []
+    if (String(searchinput).trim().length>0) {
+        resultArray = data.filter(product=>String(product.title).includes(searchinput))
+    console.log(resultArray)
+    productDetails(resultArray)    
+    }
+    else{
+        removeElements()
+    }
+    
+})
+
+function productDetails(products) {
+    removeElements()
+   products.forEach(product=>{
+    SingleproductDetails(product)
+   }) 
+}
+
+function SingleproductDetails(product) {
+    let resultDiv = document.createElement('div')
+    let productImage = document.createElement('img')
+    let productHeading = document.createElement('h4')
+    let priceButton = document.createElement('p')
+    let purchaseButton = document.createElement('button')
+
+    productImage.src = product.image
+    productHeading.innerHTML = product.title
+    priceButton.innerHTML = product.price
+    purchaseButton.innerHTML = 'Purchase'
+    resultDiv.className = 'result'
+
+    resultDiv.append(productImage)
+    resultDiv.append(productHeading)
+    resultDiv.append(priceButton)
+    resultDiv.append(purchaseButton)
+
+    resultRootElement.append(resultDiv)
+    
+}
+
+function removeElements() {
+    document.querySelectorAll(".result").forEach(prod=>{
+        prod.remove()
+    })
+
+    
+}
+
+
+
+
+
+
+
+
+
+
+
